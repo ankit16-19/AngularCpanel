@@ -30,12 +30,51 @@ h1.example-app-name {
   flex: 1 0 auto;
 }
 
+.sidemenu{
+  padding: 0;
+  margin-top:40px;
+}
+
+.sidemenu a{
+  display: block;
+  text-align: center;
+
+}
+
+.sidemenu mat-icon{
+  font-size:25px;
+  text-align: center;
+
+}
+
+.toolbar-right{
+  position: absolute;
+  right: 10px;
+  float: left;
+}
+.navlist{
+  width: 250px;
+}
+.navlist mat-icon{
+  margin-right: 20px;
+}
+.popnumber{
+  background-color: red;
+  border-radius:13px;
+  padding: 2px 6px;
+  color: white;
+}
+.mat-tab-label.labelleft{
+  margin-left: 500px;
+}
+
+
+
 
 
 @media all and (min-width: 600px){
   mat-sidenav-content{
-    margin-left: 150px !important;
-    padding-right:100px !important;
+    padding-right:90px !important;
   }
 }
 

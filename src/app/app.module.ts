@@ -8,9 +8,10 @@ import {HttpModule} from '@angular/http';
 import { AmChartsModule } from '@amcharts/amcharts3-angular';
 
 import { AngularModule} from './angular.module';
-import { Bootstrap4Module} from './bootstrap4.module';
-
 import {AppComponent} from './app.component';
+
+// Bootstrap imports
+import { AccordionModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -19,13 +20,13 @@ import {AppComponent} from './app.component';
   imports: [
     BrowserModule,
     AngularModule,
-    Bootstrap4Module,
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
     AmChartsModule,
+    AccordionModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,31 +1,318 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches" >
   <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1 class="example-app-name">Responsive App</h1>
+    <h1 class="example-app-name"><span style="color: red;">C</span>panel</h1>
+
+    <!--toolbar-right-->
+    <div class="toolbar-right">
+      <mat-menu #mail="matMenu" [overlapTrigger]=false>
+        <button mat-menu-item> Settings </button>
+        <button mat-menu-item> Help </button>
+      </mat-menu>
+
+      <button mat-icon-button [matMenuTriggerFor]="mail" >
+        <mat-icon>chat</mat-icon> <span>2</span>
+      </button>
+
+      <mat-menu #mail="matMenu">
+        <button mat-menu-item> Settings </button>
+        <button mat-menu-item> Help </button>
+      </mat-menu>
+
+      <button mat-icon-button [matMenuTriggerFor]="mail">
+        <mat-icon>add_alert</mat-icon><span>5</span>
+      </button>
+
+
+      <mat-menu #dot="matMenu">
+        <button mat-menu-item><mat-icon>build</mat-icon> Settings </button>
+        <button mat-menu-item><mat-icon>power_settings_new</mat-icon>Logout</button>
+      </mat-menu>
+      <button mat-icon-button [matMenuTriggerFor]="dot">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+
+    </div>
+    <!--#toolbar-right ends-->
   </mat-toolbar>
 
-  <mat-sidenav-container class="example-sidenav-container"
-                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'over'"
-                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'over'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
 
       <mat-nav-list>
-        <a mat-list-item routerLink="." *ngFor="let nav of fillerNav">{{nav}}</a>
+          <div class="navlist">
+            <mat-list>
+              <a href="">
+                <mat-list-item><mat-icon>dashboard</mat-icon>Dashboard</mat-list-item>
+              </a>
+              <a href="">
+                <mat-list-item><mat-icon>dns</mat-icon>server</mat-list-item>
+              </a>
+              <a href="">
+                <mat-list-item><mat-icon>get_app</mat-icon> Downloader </mat-list-item>
+              </a>
+              <hr>
+            </mat-list>
+          </div>
       </mat-nav-list>
+
+
     </mat-sidenav>
 
     <mat-sidenav-content>
-
-      <div class="container-fluid">
+     <!--content-->
       <div class="row">
-        <div class="col-lg-3"><div id="cpu" [style.width.%]="100" [style.height.px]="300"></div></div>
-        <div class="col-lg-3"><div id="network" [style.width.%]="100" [style.height.px]="300"></div></div>
-        <div class="col-lg-3"><div id="ram" [style.width.%]="100" [style.height.px]="300"></div></div>
-        <div class="col-lg-3"></div>
+        <!--side menu-->
+        <div class="col-lg-1" style="left: 10px;">
+          <div class="sidemenu">
+            <a href="">
+              <mat-icon class="">dashboard</mat-icon>
+              <small class="">Dashhboard</small>
+            </a>
+            <hr>
+            <a href="">
+              <mat-icon class="text-muted">dns</mat-icon><br>
+              <small class="text-muted">server</small>
+            </a>
+            <hr>
+            <a href="">
+              <mat-icon class="text-muted">get_app</mat-icon><br>
+              <small class="text-muted">Downloader</small>
+            </a>
+          </div>
+        </div>
+        <!--#side menu ends-->
+
+        <!--main menu-->
+        <div class="col-lg-11">
+
+          <!--&lt;!&ndash;first row&ndash;&gt;-->
+          <!--<div class="container-fluid">-->
+            <!--<div class="row">-->
+              <!--<div class="col-lg-3"><div id="cpu" [style.width.%]="100" [style.height.px]="300"></div></div>-->
+              <!--<div class="col-lg-3"><div id="network" [style.width.%]="100" [style.height.px]="300"></div></div>-->
+              <!--<div class="col-lg-3"><div id="ram" [style.width.%]="100" [style.height.px]="300"></div></div>-->
+              <!--<div class="col-lg-3" style="margin-top: 20px">-->
+                <!--<ul class="list-group">-->
+                  <!--<li class="list-group-item">-->
+                    <!--HostName: RAT-->
+                  <!--</li>-->
+                  <!--<li class="list-group-item">-->
+                    <!--SystemUptime : 2days 20min-->
+                  <!--</li>-->
+                  <!--<li class="list-group-item">-->
+                    <!--<p>Disk speed: 30mbps</p>-->
+                  <!--</li>-->
+                  <!--<li class="list-group-item">-->
+                    <!--<mat-progress-bar-->
+                      <!--color="primary"-->
+                      <!--mode="Determinate"-->
+                      <!--value="30"></mat-progress-bar>-->
+                    <!--<p>HDD: 300/1000GB</p>-->
+                  <!--</li>-->
+                <!--</ul>-->
+
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--&lt;!&ndash;#first row ends&ndash;&gt;-->
+
+          <!--&lt;!&ndash;second row&ndash;&gt;-->
+          <!--<div class="container-fluid">-->
+            <!--<div class="row">-->
+              <!--<div class="col-lg-9">-->
+                <!--<accordion >-->
+                  <!--<accordion-group heading="System Information" isOpen=true isDisabled="true"  panelClass="panel panel-primary">-->
+                    <!--<div class="row">-->
+                      <!--<div class="col-lg-3"><strong><p>System Time:</p></strong></div>-->
+                      <!--<div class="col-lg-6"><p>2Am</p></div>-->
+                    <!--</div>-->
+                    <!--<div class="row">-->
+                      <!--<div class="col-lg-3"><strong><p>Cpu:</p></strong></div>-->
+                      <!--<div class="col-lg-6"><p>Intel I5</p></div>-->
+                    <!--</div>-->
+                  <!--</accordion-group>-->
+                <!--</accordion>-->
+              <!--</div>-->
+              <!--<div class="col-lg-3">-->
+                <!--<accordion >-->
+                  <!--<accordion-group heading="Todo List" isOpen=true isDisabled="true"  panelClass="panel panel-info"><mat-list>-->
+                    <!--<mat-list-item> Mails</mat-list-item>-->
+                    <!--<mat-list-item> Alerts </mat-list-item>-->
+                    <!--<mat-list-item> Modules </mat-list-item>-->
+                  <!--</mat-list>-->
+                  <!--</accordion-group>-->
+                <!--</accordion>-->
+              <!--</div>-->
+              <!--<div class="col-lg-3">-->
+
+
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--&lt;!&ndash;#second row ends&ndash;&gt;-->
+
+          <!--Downloader-->
+          <div style="height: 20px"></div>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-11" style="background-color: #fff;border-radius: 10px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);;height:500px;overflow-y: scroll"
+            >
+              <mat-tab-group>
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <mat-icon>add_circle</mat-icon> Download
+                  </ng-template>
+
+                  <div class="text-center" style="padding: 100px">
+                    <mat-form-field class="example-form-field example-full-width">
+                      <input matInput type="text" placeholder="Paste Download Link here" [(ngModel)]="value"/>
+                      <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                    <button type="button" class="btn btn-primary">Go!!</button>
+                  </div>
+
+                </mat-tab>
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <mat-icon>get_app</mat-icon> Processing
+                  </ng-template>
+                  <mat-list>
+                    <mat-list-item><p>Dragon Ball super Episode 20 Goku vs Freeza</p></mat-list-item>
+                  </mat-list>
+                  <p class="text-muted pull-right">10/50mb </p>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                  </div>
+                  <button mat-button mat-icon-button>
+                    <mat-icon>play_circle_filled</mat-icon>
+                  </button>
+                  <button mat-button mat-icon-button>
+                    <mat-icon>pause_circle_outline</mat-icon>
+                  </button>
+                  <button mat-button mat-icon-button>
+                    <mat-icon>import_export</mat-icon>220kbps
+                  </button>
+                  <button mat-button mat-icon-button class="pull-right">
+                    <mat-icon>clear</mat-icon>
+                  </button>
+                  <hr>
+                  <mat-list>
+                    <mat-list-item><p>Dragon Ball super Episode 21 Rise of super sayain</p></mat-list-item>
+                  </mat-list>
+                  <p class="text-muted pull-right">5/50mb </p>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width:30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">30%</div>
+                  </div>
+                  <button mat-button mat-icon-button>
+                    <mat-icon>play_circle_filled</mat-icon>
+                  </button>
+                  <button mat-button mat-icon-button>
+                    <mat-icon>pause_circle_outline</mat-icon>
+                  </button>
+                  <button mat-button mat-icon-button>
+                    <mat-icon>import_export</mat-icon>20kbps
+                  </button>
+                  <button mat-button mat-icon-button class="pull-right">
+                    <mat-icon>clear</mat-icon>
+                  </button>
+
+
+                  <hr>
+
+
+                </mat-tab>
+                <mat-tab>
+                  <ng-template mat-tab-label class="labelleft">
+                    <mat-icon>playlist_add_check</mat-icon>Completed
+                  </ng-template>
+                  <mat-list>
+                    <mat-list-item><p>Dragon Ball super Episode 21 Rise of super sayain</p></mat-list-item>
+                  </mat-list>
+                  <button mat-button mat-icon-button class="pull-right">
+                    <mat-icon>play_for_work</mat-icon>
+                  </button>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                  </div>
+                  <hr>
+                  <mat-list>
+                    <mat-list-item><p>Dragon Ball super Episode 22</p></mat-list-item>
+                  </mat-list>
+                  <button mat-button mat-icon-button class="pull-right">
+                    <mat-icon>play_for_work</mat-icon>
+                  </button>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                  </div>
+                  <hr>
+                </mat-tab>
+
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <mat-icon>alarm_on</mat-icon> Queued
+                  </ng-template>
+
+                  <p>...</p>
+                </mat-tab>
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <mat-icon>settings_remote</mat-icon> Create Link
+                  </ng-template>
+
+                  <mat-list>
+                    <mat-list-item><p>Dragon Ball super Episode 21 Rise of super sayain</p></mat-list-item>
+                  </mat-list>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                  </div>
+                  <button mat-button mat-icon-button>
+                    <mat-icon>publish</mat-icon>
+                  </button>
+                  <button mat-button mat-icon-button class="pull-right">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                  <hr>
+                  <mat-list>
+                    <mat-list-item><p>Dragon Ball super Episode 22</p></mat-list-item>
+                  </mat-list>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
+                  </div>
+                  <button mat-button mat-icon-button>
+                    <mat-icon>publish</mat-icon>
+                  </button>
+                  <button mat-button mat-icon-button class="pull-right">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+                  <hr>
+                </mat-tab>
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <mat-icon>settings</mat-icon> Setting
+                  </ng-template>
+
+                  <p>...</p>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg8">
+
+            </div>
+          </div>
+        </div>
+        <!--#main menu ends-->
       </div>
-      </div>
-      <p *ngFor="let content of fillerContent">{{content}}</p>
+      <!--#content-->
     </mat-sidenav-content>
+
+
   </mat-sidenav-container>
 </div>
 

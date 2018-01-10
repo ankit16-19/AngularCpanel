@@ -32,14 +32,6 @@ export class AppComponent {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     // timer to change the value of meter
-    this.x = 60;
-    this.timer = setInterval(() => {
-      // Update chart
-      this.AmCharts.updateChart(this.cpu, () => {
-        this.cpu.arrows[0].value = this.x;
-        // this.x
-      });
-    }, 1000);
   }
 
   ngAfterViewInit() {
