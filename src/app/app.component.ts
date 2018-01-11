@@ -1,7 +1,8 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
-
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import 'rxjs/add/operator/retry';
 
 /** @title Responsive sidenav */
 @Component({
@@ -9,30 +10,48 @@ import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   private cpu: AmChart;
   private ram: AmChart;
   private network: AmChart;
-  private timer: any;
+  staticData: string[{}];
+  dynamicData: string[{}];
+  timer: any;
   mobileQuery: MediaQueryList;
-
-  fillerNav = Array(50).fill(0).map((_, i) => `Nav Items ${i + 1}`);
-
-  fillerContent = Array(50).fill(0).map(() =>
-    `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-       labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-       laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-       voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-       cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`);
-
   private _mobileQueryListener: () => void;
-
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private AmCharts: AmChartsService) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private AmCharts: AmChartsService, private http: HttpClient) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    // timer to change the value of meter
+    this.timer = setInterval(() => {
+      this.getDynamicData(); }, 1000);
   }
+  getDynamicData(){
+    this.http.get('http://127.0.0.1:3000/cpanel/dynamic').retry(2).subscribe(data =>  {
+      this.dynamicData = data;
+      console.log(data);
+      console.log(data);
+    }, ( err: HttpErrorResponse) => {
+      if ( err.error instanceof Error ) {
+        console.log('An error occurred:', err.error.message);
+      } else {
+        console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+      }
+    });
+  }
+  ngOnInit(): void {
+    this.http.get('http://127.0.0.1:3000/cpanel/static').retry(2).subscribe(data =>  {
+      this.staticData = data;
+      console.log(data);
+      }, ( err: HttpErrorResponse) => {
+          if ( err.error instanceof Error ) {
+            console.log('An error occurred:', err.error.message);
+          } else {
+            console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+      }
+    });
+  }
+
 
   ngAfterViewInit() {
     this.cpu = this.AmCharts.makeChart( 'cpu', {
@@ -131,11 +150,7 @@ export class AppComponent {
 
 
   ngOnDestroy(): void {
-    clearInterval(this.timer);
     this.mobileQuery.removeListener(this._mobileQueryListener);
-    if (this.chart) {
-      this.AmCharts.destroyChart(this.chart);
-    }
   }
 
 }

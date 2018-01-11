@@ -87,227 +87,246 @@
         <!--main menu-->
         <div class="col-lg-11">
 
-          <!--&lt;!&ndash;first row&ndash;&gt;-->
-          <!--<div class="container-fluid">-->
-            <!--<div class="row">-->
-              <!--<div class="col-lg-3"><div id="cpu" [style.width.%]="100" [style.height.px]="300"></div></div>-->
-              <!--<div class="col-lg-3"><div id="network" [style.width.%]="100" [style.height.px]="300"></div></div>-->
-              <!--<div class="col-lg-3"><div id="ram" [style.width.%]="100" [style.height.px]="300"></div></div>-->
-              <!--<div class="col-lg-3" style="margin-top: 20px">-->
-                <!--<ul class="list-group">-->
-                  <!--<li class="list-group-item">-->
-                    <!--HostName: RAT-->
-                  <!--</li>-->
-                  <!--<li class="list-group-item">-->
-                    <!--SystemUptime : 2days 20min-->
-                  <!--</li>-->
-                  <!--<li class="list-group-item">-->
-                    <!--<p>Disk speed: 30mbps</p>-->
-                  <!--</li>-->
-                  <!--<li class="list-group-item">-->
-                    <!--<mat-progress-bar-->
-                      <!--color="primary"-->
-                      <!--mode="Determinate"-->
-                      <!--value="30"></mat-progress-bar>-->
-                    <!--<p>HDD: 300/1000GB</p>-->
-                  <!--</li>-->
-                <!--</ul>-->
+          <!--first row-->
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-3"><div id="cpu" [style.width.%]="100" [style.height.px]="300"></div></div>
+              <div class="col-lg-3"><div id="network" [style.width.%]="100" [style.height.px]="300"></div></div>
+              <div class="col-lg-3"><div id="ram" [style.width.%]="100" [style.height.px]="300"></div></div>
+              <div class="col-lg-3" style="margin-top: 20px">
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <strong>HostName</strong>: {{staticData?.os.hostname}}
+                  </li>
+                  <li class="list-group-item">
+                    <strong>SystemUptime</strong> : {{dynamicData?.time.uptime}}
+                  </li>
+                  <li class="list-group-item">
+                    <p>Disk speed: 30mbps</p>
+                  </li>
 
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--&lt;!&ndash;#first row ends&ndash;&gt;-->
+                </ul>
 
-          <!--&lt;!&ndash;second row&ndash;&gt;-->
-          <!--<div class="container-fluid">-->
-            <!--<div class="row">-->
-              <!--<div class="col-lg-9">-->
-                <!--<accordion >-->
-                  <!--<accordion-group heading="System Information" isOpen=true isDisabled="true"  panelClass="panel panel-primary">-->
-                    <!--<div class="row">-->
-                      <!--<div class="col-lg-3"><strong><p>System Time:</p></strong></div>-->
-                      <!--<div class="col-lg-6"><p>2Am</p></div>-->
-                    <!--</div>-->
-                    <!--<div class="row">-->
-                      <!--<div class="col-lg-3"><strong><p>Cpu:</p></strong></div>-->
-                      <!--<div class="col-lg-6"><p>Intel I5</p></div>-->
-                    <!--</div>-->
-                  <!--</accordion-group>-->
-                <!--</accordion>-->
-              <!--</div>-->
-              <!--<div class="col-lg-3">-->
+              </div>
+            </div>
+          </div>
+          <!--#first row ends-->
+
+          <!--second row-->
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-9">
+                <accordion >
+                  <accordion-group heading="System Information" isOpen=true isDisabled="true"  panelClass="panel panel-primary">
+                    <div class="row">
+                      <div class="col-lg-3"><strong><p>System Time:</p></strong></div>
+                      <div class="col-lg-6"><p>{{dynamicData?.time.current}}</p></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-3"><strong><p>Cpu:</p></strong></div>
+                      <div class="col-lg-6"><p>{{staticData?.cpu.manufacturer}} {{staticData?.cpu.brand}} {{staticData?.cpu.speedmax}}</p></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-3"><strong><p>Cpu cores:</p></strong></div>
+                      <div class="col-lg-6"><p>{{staticData?.cpu.cores}}</p></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-3"><strong><p>Os:</p></strong></div>
+                      <div class="col-lg-6"><p>{{staticData?.os.platform}}, {{staticData?.os.distro}} {{staticData?.os.arch}} </p></div>
+                    </div>
+                    <div class="row" *ngFor="let network of staticData?.net ; let i = index">
+                      <div class="col-lg-3"><strong><p>Network({{staticData?.net[i].iface}}):</p></strong></div>
+                      <div class="col-lg-6"><p>
+                        ipv4: {{staticData?.net[i].ip4}}<br>
+                        ipv6: {{staticData?.net[i].ip6}}<br>
+                        mac: {{staticData?.net[i].mac}}<br>
+                      </p></div>
+                    </div>
+
+                  </accordion-group>
+                </accordion>
+              </div>
+              <div class="col-lg-3">
                 <!--<accordion >-->
                   <!--<accordion-group heading="Todo List" isOpen=true isDisabled="true"  panelClass="panel panel-info"><mat-list>-->
+
                     <!--<mat-list-item> Mails</mat-list-item>-->
                     <!--<mat-list-item> Alerts </mat-list-item>-->
                     <!--<mat-list-item> Modules </mat-list-item>-->
                   <!--</mat-list>-->
                   <!--</accordion-group>-->
                 <!--</accordion>-->
-              <!--</div>-->
-              <!--<div class="col-lg-3">-->
+                <ul class="list-group">
+                  <strong>HDD</strong>
+                  <li class="list-group-item" *ngFor="let disk of dynamicData?.fsSize;let i = index">
+                    <p>{{disk.fs}}</p>
+                    <mat-progress-bar
+                      color="primary"
+                      mode="Determinate"
+                      value="{{disk.use}}"></mat-progress-bar>
+                    <p class="text-muted">{{disk.use}}</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-3">
 
 
-              <!--</div>-->
+              </div>
+            </div>
+          </div>
+          <!--#second row ends-->
+
+          <!--&lt;!&ndash;Downloader&ndash;&gt;-->
+          <!--<div style="height: 20px"></div>-->
+          <!--<div class="row">-->
+            <!--<div class="col-lg-1"></div>-->
+            <!--<div class="col-lg-11" style="background-color: #fff;border-radius: 10px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);;height:500px;overflow-y: scroll"-->
+            <!--&gt;-->
+              <!--<mat-tab-group>-->
+                <!--<mat-tab>-->
+                  <!--<ng-template mat-tab-label>-->
+                    <!--<mat-icon>add_circle</mat-icon> Download-->
+                  <!--</ng-template>-->
+
+                  <!--<div class="text-center" style="padding: 100px">-->
+                    <!--<mat-form-field class="example-form-field example-full-width">-->
+                      <!--<input matInput type="text" placeholder="Paste Download Link here" [(ngModel)]="value"/>-->
+                      <!--<button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">-->
+                        <!--<mat-icon>close</mat-icon>-->
+                      <!--</button>-->
+                    <!--</mat-form-field>-->
+                    <!--<button type="button" class="btn btn-primary">Go!!</button>-->
+                  <!--</div>-->
+
+                <!--</mat-tab>-->
+                <!--<mat-tab>-->
+                  <!--<ng-template mat-tab-label>-->
+                    <!--<mat-icon>get_app</mat-icon> Processing-->
+                  <!--</ng-template>-->
+                  <!--<mat-list>-->
+                    <!--<mat-list-item><p>Dragon Ball super Episode 20 Goku vs Freeza</p></mat-list-item>-->
+                  <!--</mat-list>-->
+                  <!--<p class="text-muted pull-right">10/50mb </p>-->
+                  <!--<div class="progress">-->
+                    <!--<div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>-->
+                  <!--</div>-->
+                  <!--<button mat-button mat-icon-button>-->
+                    <!--<mat-icon>play_circle_filled</mat-icon>-->
+                  <!--</button>-->
+                  <!--<button mat-button mat-icon-button>-->
+                    <!--<mat-icon>pause_circle_outline</mat-icon>-->
+                  <!--</button>-->
+                  <!--<button mat-button mat-icon-button>-->
+                    <!--<mat-icon>import_export</mat-icon>220kbps-->
+                  <!--</button>-->
+                  <!--<button mat-button mat-icon-button class="pull-right">-->
+                    <!--<mat-icon>clear</mat-icon>-->
+                  <!--</button>-->
+                  <!--<hr>-->
+                  <!--<mat-list>-->
+                    <!--<mat-list-item><p>Dragon Ball super Episode 21 Rise of super sayain</p></mat-list-item>-->
+                  <!--</mat-list>-->
+                  <!--<p class="text-muted pull-right">5/50mb </p>-->
+                  <!--<div class="progress">-->
+                    <!--<div class="progress-bar" role="progressbar" style="width:30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">30%</div>-->
+                  <!--</div>-->
+                  <!--<button mat-button mat-icon-button>-->
+                    <!--<mat-icon>play_circle_filled</mat-icon>-->
+                  <!--</button>-->
+                  <!--<button mat-button mat-icon-button>-->
+                    <!--<mat-icon>pause_circle_outline</mat-icon>-->
+                  <!--</button>-->
+                  <!--<button mat-button mat-icon-button>-->
+                    <!--<mat-icon>import_export</mat-icon>20kbps-->
+                  <!--</button>-->
+                  <!--<button mat-button mat-icon-button class="pull-right">-->
+                    <!--<mat-icon>clear</mat-icon>-->
+                  <!--</button>-->
+
+
+                  <!--<hr>-->
+
+
+                <!--</mat-tab>-->
+                <!--<mat-tab>-->
+                  <!--<ng-template mat-tab-label class="labelleft">-->
+                    <!--<mat-icon>playlist_add_check</mat-icon>Completed-->
+                  <!--</ng-template>-->
+                  <!--<mat-list>-->
+                    <!--<mat-list-item><p>Dragon Ball super Episode 21 Rise of super sayain</p></mat-list-item>-->
+                  <!--</mat-list>-->
+                  <!--<button mat-button mat-icon-button class="pull-right">-->
+                    <!--<mat-icon>play_for_work</mat-icon>-->
+                  <!--</button>-->
+                  <!--<div class="progress">-->
+                    <!--<div class="progress-bar" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>-->
+                  <!--</div>-->
+                  <!--<hr>-->
+                  <!--<mat-list>-->
+                    <!--<mat-list-item><p>Dragon Ball super Episode 22</p></mat-list-item>-->
+                  <!--</mat-list>-->
+                  <!--<button mat-button mat-icon-button class="pull-right">-->
+                    <!--<mat-icon>play_for_work</mat-icon>-->
+                  <!--</button>-->
+                  <!--<div class="progress">-->
+                    <!--<div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>-->
+                  <!--</div>-->
+                  <!--<hr>-->
+                <!--</mat-tab>-->
+
+                <!--<mat-tab>-->
+                  <!--<ng-template mat-tab-label>-->
+                    <!--<mat-icon>alarm_on</mat-icon> Queued-->
+                  <!--</ng-template>-->
+
+                  <!--<p>...</p>-->
+                <!--</mat-tab>-->
+                <!--<mat-tab>-->
+                  <!--<ng-template mat-tab-label>-->
+                    <!--<mat-icon>settings_remote</mat-icon> Create Link-->
+                  <!--</ng-template>-->
+
+                  <!--<mat-list>-->
+                    <!--<mat-list-item><p>Dragon Ball super Episode 21 Rise of super sayain</p></mat-list-item>-->
+                  <!--</mat-list>-->
+                  <!--<div class="progress">-->
+                    <!--<div class="progress-bar" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>-->
+                  <!--</div>-->
+                  <!--<button mat-button mat-icon-button>-->
+                    <!--<mat-icon>publish</mat-icon>-->
+                  <!--</button>-->
+                  <!--<button mat-button mat-icon-button class="pull-right">-->
+                    <!--<mat-icon>cancel</mat-icon>-->
+                  <!--</button>-->
+                  <!--<hr>-->
+                  <!--<mat-list>-->
+                    <!--<mat-list-item><p>Dragon Ball super Episode 22</p></mat-list-item>-->
+                  <!--</mat-list>-->
+                  <!--<div class="progress">-->
+                    <!--<div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>-->
+                  <!--</div>-->
+                  <!--<button mat-button mat-icon-button>-->
+                    <!--<mat-icon>publish</mat-icon>-->
+                  <!--</button>-->
+                  <!--<button mat-button mat-icon-button class="pull-right">-->
+                  <!--<mat-icon>cancel</mat-icon>-->
+                <!--</button>-->
+                  <!--<hr>-->
+                <!--</mat-tab>-->
+                <!--<mat-tab>-->
+                  <!--<ng-template mat-tab-label>-->
+                    <!--<mat-icon>settings</mat-icon> Setting-->
+                  <!--</ng-template>-->
+
+                  <!--<p>...</p>-->
+                <!--</mat-tab>-->
+              <!--</mat-tab-group>-->
             <!--</div>-->
           <!--</div>-->
-          <!--&lt;!&ndash;#second row ends&ndash;&gt;-->
-
-          <!--Downloader-->
-          <div style="height: 20px"></div>
-          <div class="row">
-            <div class="col-lg-1"></div>
-            <div class="col-lg-11" style="background-color: #fff;border-radius: 10px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);;height:500px;overflow-y: scroll"
-            >
-              <mat-tab-group>
-                <mat-tab>
-                  <ng-template mat-tab-label>
-                    <mat-icon>add_circle</mat-icon> Download
-                  </ng-template>
-
-                  <div class="text-center" style="padding: 100px">
-                    <mat-form-field class="example-form-field example-full-width">
-                      <input matInput type="text" placeholder="Paste Download Link here" [(ngModel)]="value"/>
-                      <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </mat-form-field>
-                    <button type="button" class="btn btn-primary">Go!!</button>
-                  </div>
-
-                </mat-tab>
-                <mat-tab>
-                  <ng-template mat-tab-label>
-                    <mat-icon>get_app</mat-icon> Processing
-                  </ng-template>
-                  <mat-list>
-                    <mat-list-item><p>Dragon Ball super Episode 20 Goku vs Freeza</p></mat-list-item>
-                  </mat-list>
-                  <p class="text-muted pull-right">10/50mb </p>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                  </div>
-                  <button mat-button mat-icon-button>
-                    <mat-icon>play_circle_filled</mat-icon>
-                  </button>
-                  <button mat-button mat-icon-button>
-                    <mat-icon>pause_circle_outline</mat-icon>
-                  </button>
-                  <button mat-button mat-icon-button>
-                    <mat-icon>import_export</mat-icon>220kbps
-                  </button>
-                  <button mat-button mat-icon-button class="pull-right">
-                    <mat-icon>clear</mat-icon>
-                  </button>
-                  <hr>
-                  <mat-list>
-                    <mat-list-item><p>Dragon Ball super Episode 21 Rise of super sayain</p></mat-list-item>
-                  </mat-list>
-                  <p class="text-muted pull-right">5/50mb </p>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width:30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">30%</div>
-                  </div>
-                  <button mat-button mat-icon-button>
-                    <mat-icon>play_circle_filled</mat-icon>
-                  </button>
-                  <button mat-button mat-icon-button>
-                    <mat-icon>pause_circle_outline</mat-icon>
-                  </button>
-                  <button mat-button mat-icon-button>
-                    <mat-icon>import_export</mat-icon>20kbps
-                  </button>
-                  <button mat-button mat-icon-button class="pull-right">
-                    <mat-icon>clear</mat-icon>
-                  </button>
-
-
-                  <hr>
-
-
-                </mat-tab>
-                <mat-tab>
-                  <ng-template mat-tab-label class="labelleft">
-                    <mat-icon>playlist_add_check</mat-icon>Completed
-                  </ng-template>
-                  <mat-list>
-                    <mat-list-item><p>Dragon Ball super Episode 21 Rise of super sayain</p></mat-list-item>
-                  </mat-list>
-                  <button mat-button mat-icon-button class="pull-right">
-                    <mat-icon>play_for_work</mat-icon>
-                  </button>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
-                  </div>
-                  <hr>
-                  <mat-list>
-                    <mat-list-item><p>Dragon Ball super Episode 22</p></mat-list-item>
-                  </mat-list>
-                  <button mat-button mat-icon-button class="pull-right">
-                    <mat-icon>play_for_work</mat-icon>
-                  </button>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
-                  </div>
-                  <hr>
-                </mat-tab>
-
-                <mat-tab>
-                  <ng-template mat-tab-label>
-                    <mat-icon>alarm_on</mat-icon> Queued
-                  </ng-template>
-
-                  <p>...</p>
-                </mat-tab>
-                <mat-tab>
-                  <ng-template mat-tab-label>
-                    <mat-icon>settings_remote</mat-icon> Create Link
-                  </ng-template>
-
-                  <mat-list>
-                    <mat-list-item><p>Dragon Ball super Episode 21 Rise of super sayain</p></mat-list-item>
-                  </mat-list>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
-                  </div>
-                  <button mat-button mat-icon-button>
-                    <mat-icon>publish</mat-icon>
-                  </button>
-                  <button mat-button mat-icon-button class="pull-right">
-                    <mat-icon>cancel</mat-icon>
-                  </button>
-                  <hr>
-                  <mat-list>
-                    <mat-list-item><p>Dragon Ball super Episode 22</p></mat-list-item>
-                  </mat-list>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
-                  </div>
-                  <button mat-button mat-icon-button>
-                    <mat-icon>publish</mat-icon>
-                  </button>
-                  <button mat-button mat-icon-button class="pull-right">
-                  <mat-icon>cancel</mat-icon>
-                </button>
-                  <hr>
-                </mat-tab>
-                <mat-tab>
-                  <ng-template mat-tab-label>
-                    <mat-icon>settings</mat-icon> Setting
-                  </ng-template>
-
-                  <p>...</p>
-                </mat-tab>
-              </mat-tab-group>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-3"></div>
-            <div class="col-lg8">
-
-            </div>
-          </div>
-        </div>
+        <!--</div>-->
+        <!--&lt;!&ndash;#Downloadends&ndash;&gt;-->
         <!--#main menu ends-->
+      </div>
       </div>
       <!--#content-->
     </mat-sidenav-content>
