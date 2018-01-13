@@ -1,0 +1,79 @@
+<!--first row-->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-3"><div id="cpu" [style.width.%]="100" [style.height.px]="300"></div></div>
+    <div class="col-lg-3"><div id="network" [style.width.%]="100" [style.height.px]="300"></div></div>
+    <div class="col-lg-3"><div id="ram" [style.width.%]="100" [style.height.px]="300"></div></div>
+    <div class="col-lg-3" style="margin-top: 20px">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <strong>HostName</strong>: {{staticData?.os.hostname}}
+        </li>
+        <li class="list-group-item">
+          <strong>SystemUptime</strong> : {{upTime}}
+        </li>
+        <li class="list-group-item">
+          <strong> <mat-icon>vertical_align_top</mat-icon>{{dynamicData?.networkStats.tx_sec}} <mat-icon>vertical_align_bottom</mat-icon>{{dynamicData?.networkStats.rx_sec}} MBps</strong>
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+</div>
+<!--#first row ends-->
+
+<!--second row-->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-9">
+      <accordion >
+        <accordion-group heading="System Information" isOpen=true isDisabled="true"  panelClass="panel panel-primary">
+          <div class="row">
+            <div class="col-lg-3"><strong><p>System Time:</p></strong></div>
+            <div class="col-lg-6"><p>{{currentTime}}</p></div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3"><strong><p>Cpu:</p></strong></div>
+            <div class="col-lg-6"><p>{{staticData?.cpu.manufacturer}} {{staticData?.cpu.brand}} {{staticData?.cpu.speedmax}}</p></div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3"><strong><p>Cpu cores:</p></strong></div>
+            <div class="col-lg-6"><p>{{staticData?.cpu.cores}}</p></div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3"><strong><p>Os:</p></strong></div>
+            <div class="col-lg-6"><p>{{staticData?.os.platform}}, {{staticData?.os.distro}} {{staticData?.os.arch}} </p></div>
+          </div>
+          <div class="row" *ngFor="let network of staticData?.net ; let i = index">
+            <div class="col-lg-3"><strong><p>Network({{staticData?.net[i].iface}}):</p></strong></div>
+            <div class="col-lg-6"><p>
+              ipv4: {{staticData?.net[i].ip4}}<br>
+              ipv6: {{staticData?.net[i].ip6}}<br>
+              mac: {{staticData?.net[i].mac}}<br>
+            </p></div>
+          </div>
+
+        </accordion-group>
+      </accordion>
+    </div>
+    <div class="col-lg-3">
+      <ul class="list-group">
+        <strong>HDD</strong>
+        <li class="list-group-item" *ngFor="let disk of dynamicData?.fsSize ;let i = index">
+          <p>{{disk.fs}}</p>
+          <mat-progress-bar
+            color="primary"
+            mode="Determinate"
+            value="{{disk.use}}"></mat-progress-bar>
+          <p class="text-muted">{{disk.used}} /{{disk.size}} GB</p>
+        </li>
+      </ul>
+    </div>
+    <div class="col-lg-3">
+
+
+    </div>
+  </div>
+</div>
+
