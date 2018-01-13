@@ -8,96 +8,74 @@ import 'rxjs/add/operator/retry';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit, OnDestroy , AfterViewInit{
-  private cpu: AmChart;
-  private ram: AmChart;
-  private network: AmChart;
+export class DashboardComponent implements OnInit, OnDestroy , AfterViewInit {
+  private cpu: AmChart ; ram: AmChart ; network: AmChart;
   staticData: any;
   dynamicData: any;
   timer: any;
-  currentTime: any;
-  upTime: any;
+  currentTime: Date;
+  upTime: string;
   ramUse: number;
 
+  // constructor
   constructor(private AmCharts: AmChartsService, private http: HttpClient) {
     this.timer = setInterval(() => {
       this.getDynamicData();
     }, 1000);
   }
-
-  // function to update charts
-  updateCharts() {
-    // cpu chart
-    this.AmCharts.updateChart(this.cpu, () => {
-      this.cpu.arrows[0].value = this.dynamicData.currentLoad.currentload;
-    });
-    this.AmCharts.updateChart(this.ram, () => {
-      this.ram.arrows[0].value = this.ramUse;
-      this.ram.axes[0].bottomText = 'Ram' + '(' + (this.dynamicData.mem.used / ( 1024 * 1024 * 1024)).toFixed(2) + '/' + (this.dynamicData.mem.total / ( 1024 * 1024 * 1024 )).toFixed(2) + ')';
-    });
-    this.AmCharts.updateChart(this.network, () => {
-      this.network.arrows[0].value = this.dynamicData.networkStats.rx_sec * 8;
-      this.network.axes[0].bottomText = this.dynamicData.networkStats.rx_sec + 'MBps';
+  // error handling
+  error = (err) => {
+    return ( err.error instanceof Error ) ?
+      console.log('An error occurred:', err.error.message) : console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+  }
+  // converting types
+  convert = (obj: object, param: string, power: number) => {
+    return obj[param] = (obj[param] / Math.pow(1024, power)).toFixed(2);
+  }
+  update = (chart: any, value: any[]) => {
+    this.AmCharts.updateChart(chart, () => {
+      chart.arrows[0].setValue(value[0]);
+      chart.axes[0].setBottomText(value[1]);
     });
   }
-
-  // function to get dynamicData
-  getDynamicData() {
+  // updateChart data
+  updateCharts = () => {
+    this.update(this.cpu, [this.dynamicData.currentLoad.currentload,
+      'cpu']);
+    this.update(this.ram, [this.ramUse,
+      'Ram' + '(' + (this.convert(this.dynamicData.mem, 'used', 3) + '/' + this.convert(this.dynamicData.mem, 'total', 3)) + ')']);
+    this.update(this.network, [this.dynamicData.networkStats.rx_sec * 8,
+      this.dynamicData.networkStats.rx_sec + 'MBps']);
+  }
+  // dynamicData function
+  getDynamicData = () => {
     this.http.get('http://127.0.0.1:3000/cpanel/dynamic').retry(2).subscribe(data => {
       this.dynamicData = data;
+      // changing bytes to gb for HDD
+      this.dynamicData.fsSize.map( disk => {
+        this.convert(disk, 'size', 3);
+        this.convert(disk, 'used', 3);
+      });
+      // changing bytes to mb for network
+      ['rx', 'rx_sec', 'tx', 'tx_sec'].map((stat) => this.convert(this.dynamicData.networkStats ,stat, 2));
       this.currentTime = new Date(this.dynamicData.time.current);
       const time = new Date(this.dynamicData.time.uptime);
       this.upTime = Math.round(time.getTime() / 3600) + 'H ' + Math.round((time.getTime() / 60 ) % 60) + 'M';
       this.ramUse = (this.dynamicData.mem.used / this.dynamicData.mem.total) * 100;
-      // changing bytes to gb for HDD
-      let i;
-      for (i = 0; i < this.dynamicData.fsSize.length; i++) {
-        this.dynamicData.fsSize[i].size = (this.dynamicData.fsSize[i].size / (1024 * 1024 * 1024)).toFixed(2);
-        this.dynamicData.fsSize[i].used = (this.dynamicData.fsSize[i].used / (1024 * 1024 * 1024)).toFixed(2);
-      }
-      // changing bytes to gb for network
-      this.dynamicData.networkStats.rx = (this.dynamicData.networkStats.rx / (1024 * 1024 )).toFixed(3);
-      this.dynamicData.networkStats.tx = (this.dynamicData.networkStats.tx / (1024 * 1024 )).toFixed(3);
-      this.dynamicData.networkStats.rx_sec = (this.dynamicData.networkStats.rx_sec / (1024 * 1024)).toFixed(3);
-      this.dynamicData.networkStats.tx_sec = (this.dynamicData.networkStats.tx_sec / (1024 * 1024)).toFixed(3);
-
-      console.log(data);
       // chart update
       this.updateCharts();
-    }, (err: HttpErrorResponse) => {
-      // error
-      if (err.error instanceof Error) {
-        // error client side
-        console.log('An error occurred:', err.error.message);
-      } else {
-        // error server side
-        console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
-      }
-    });
+    }, (err: HttpErrorResponse) => this.error(err));
   }
-
-  // function get staticData
-  getStaticData() {
-    this.http.get('http://127.0.0.1:3000/cpanel/static').retry(2).subscribe(data => {
-      this.staticData = data;
-      console.log(data);
-    }, (err: HttpErrorResponse) => {
-      // error
-      if (err.error instanceof Error) {
-        // error client side
-        console.log('An error occurred:', err.error.message);
-      } else {
-        // error server side
-        console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
-      }
-    });
+  // staticData function
+  getStaticData = () => {
+    this.http.get('http://127.0.0.1:3000/cpanel/static').retry(2)
+      .subscribe(data => this.staticData = data, (err: HttpErrorResponse) => this.error(err));
   }
-
   ngOnInit(): void {
     this.getStaticData();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     if (this.cpu) {
       this.AmCharts.destroyChart(this.cpu);
     }
@@ -205,6 +183,7 @@ export class DashboardComponent implements OnInit, OnDestroy , AfterViewInit{
     });
   }
 }
+
 
 
 
